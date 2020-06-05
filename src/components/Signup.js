@@ -16,8 +16,14 @@ const Signup = (props) =>  {
     const handleSubmit = e => {
         e.preventDefault();
 
-        firebase.signupUser(email, password)
-        .then(user => {
+        firebase.signupUser(email, password, pseudo)
+        .then(authUser => {
+            return firebase.user(authUser.user.uid).set({
+                pseudo,
+                email
+            })
+        })
+        .then(() => {
             setPseudo('');
             setEmail('');
             setPassword('');

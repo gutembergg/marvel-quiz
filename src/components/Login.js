@@ -42,7 +42,7 @@ const Login = (props) => {
                 <div className="formBoxRight">
                     <div className="formContent">
                     {!!errorMessage && <span>{errorMessage.message}</span> }
-                    <h2 style={{marginTop: "20px"}}>Login</h2>
+                    <h2 style={{marginTop: "20px"}}>Connexion</h2>
                         <form onSubmit={handleSubmit}>  
                             <div className="inputBox">
                                 <input 
@@ -68,6 +68,8 @@ const Login = (props) => {
                         </form>
                         <div className="linkContainer">
                             <Link className="simpleLink" to="/signup">Nouveau sur Marvel Quiz ? S'inscrire maintenant.</Link>
+                            <br />
+                            <Link className="simpleLink" to="/forgotpassword">Mot de passe oublié ? Récupérez-le ici.</Link>
                         </div>
                     </div>
                 </div>  

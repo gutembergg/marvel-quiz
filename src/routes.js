@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import ErrorPage from './components/ErrorPage';
 import Login from './components/Login';
 import Home from './components/Home';
+import ForgotPassword from './components/ForgotPassword';
 
 
 const Routes = () => {
@@ -16,6 +17,7 @@ const Routes = () => {
                 <Route path='/welcome' component={Welcome} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
+                <Route path='/forgotpassword' component={ForgotPassword} />
                 <Route component={ErrorPage} />
             </Switch>      
         </Router>
