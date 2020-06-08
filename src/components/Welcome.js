@@ -30,10 +30,10 @@ const Welcome = (props) => {
             })
         }
         
-
         return () => {
             listener();
         }
+        // eslint-disable-next-line
     }, [userSession]);
 
     return userSession === null ? (
