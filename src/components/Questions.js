@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Questions = () => {
+const Questions = ({ question, options }) => {
+
+    const [ btnDisable, setBtnDisable ] = useState(true);
+    const [ userAnwser, setUserAnwser ] = useState('');
+
+    const submitOption = selectedOption => {
+        setUserAnwser(selectedOption);
+        setBtnDisable(false);
+    }
+
     return (
         <>
-            <h2>Questions: </h2>
-            <p className="answerOptions">Question 1</p>
-            <p className="answerOptions">Question 2</p>
-            <p className="answerOptions">Question 3</p>
-            <p className="answerOptions">Question 4</p>
-            <button className="btnSubmit">Suivant</button>
+            <h2>{question}</h2>
+
+            {options.map((option, index) => (
+                <p 
+                    key={index} 
+                    onClick={() => submitOption(option)} 
+                    className={`answerOptions ${userAnwser === option ? "selected" : null}`}
+                    >
+                        {option}
+                </p>
+            ))}
+
+            <button disabled={btnDisable} className="btnSubmit">Suivant</button>
         </>
     )
 }
