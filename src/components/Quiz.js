@@ -7,6 +7,7 @@ import Levels from "./Levels";
 import ProgressBar from "./ProgressBar";
 import Questions from "./Questions";
 import { QuizMarvel } from "./quizMarvel";
+import QuizOver from "./QuizOver";
 
 toast.configure();
 
@@ -22,6 +23,7 @@ class Quiz extends Component {
     goodAnswer: "",
     score: 0,
     showToast: false,
+    gameEnd: false,
   };
 
   storeDataRef = React.createRef();
@@ -46,7 +48,7 @@ class Quiz extends Component {
 
       toast.warn(`Bienvenue ${this.props.userData.pseudo}`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -62,7 +64,7 @@ class Quiz extends Component {
 
   nextQuestion = (userAnswer) => {
     if (this.state.idQuestion === this.state.maxQuestions - 1) {
-      //END
+      this.gameOver();
     } else {
       this.setState((prevState) => ({
         idQuestion: prevState.idQuestion + 1,
@@ -77,7 +79,7 @@ class Quiz extends Component {
       toast.success("Bravo! + 1", {
         position: "top-right",
         bodyClassName: "toastify-color",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -88,7 +90,7 @@ class Quiz extends Component {
       toast.error("Raté! 0", {
         position: "top-right",
         bodyClassName: "toastify-color",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -118,21 +120,32 @@ class Quiz extends Component {
     }
   }
 
-  render() {
-    console.log(this.state.score);
-    //const { pseudo } = this.props.userData;
+  gameOver = () => {
+    this.setState({ gameEnd: true });
+  };
 
+  render() {
     return (
-      <div>
-        <Levels />
-        <ProgressBar />
-        <Questions
-          question={this.state.question}
-          options={this.state.options}
-          nextQuestion={this.nextQuestion}
-          idQuestion={this.state.idQuestion}
-        />
-      </div>
+      <>
+        {this.state.gameEnd ? (
+          <QuizOver />
+        ) : (
+          <>
+            <Levels />
+            <ProgressBar
+              idQuestion={this.state.idQuestion}
+              maxQuestions={this.state.maxQuestions}
+            />
+            <Questions
+              question={this.state.question}
+              options={this.state.options}
+              nextQuestion={this.nextQuestion}
+              idQuestion={this.state.idQuestion}
+              maxQuestions={this.state.maxQuestions}
+            />
+          </>
+        )}
+      </>
     );
   }
 }

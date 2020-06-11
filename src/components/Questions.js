@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-const Questions = ({ question, options, nextQuestion, idQuestion }) => {
+const Questions = ({
+  question,
+  options,
+  nextQuestion,
+  idQuestion,
+  maxQuestions,
+}) => {
   const [btnDisable, setBtnDisable] = useState(true);
   const [userAnwser, setUserAnwser] = useState("");
 
@@ -35,7 +41,7 @@ const Questions = ({ question, options, nextQuestion, idQuestion }) => {
         disabled={btnDisable}
         className="btnSubmit"
       >
-        Suivant
+        {idQuestion < maxQuestions - 1 ? "Suivant" : "Terminer"}
       </button>
     </>
   );
