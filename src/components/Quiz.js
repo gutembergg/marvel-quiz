@@ -128,7 +128,7 @@ class Quiz extends Component {
     return (
       <>
         {this.state.gameEnd ? (
-          <QuizOver />
+          <QuizOver ref={this.storeDataRef} />
         ) : (
           <>
             <Levels />
