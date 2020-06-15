@@ -4,51 +4,51 @@ import { FirebaseContext } from "./Firebase";
 import Logout from "./Logout";
 import Quiz from "./Quiz";
 
-const Welcome = (props) => {
-  const firebase = useContext(FirebaseContext);
+const Welcome = props => {
+    const firebase = useContext(FirebaseContext);
 
-  const [userSession, setUserSession] = useState(null);
-  const [userData, setUserData] = useState({});
+    const [userSession, setUserSession] = useState(null);
+    const [userData, setUserData] = useState({});
 
-  useEffect(() => {
-    let listener = firebase.auth.onAuthStateChanged((user) => {
-      user ? setUserSession(user) : props.history.push("/");
-    });
-
-    if (!!userSession) {
-      firebase
-        .user(userSession.uid)
-        .get()
-        .then((doc) => {
-          if (doc && doc.exists) {
-            const myData = doc.data();
-            setUserData(myData);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+    useEffect(() => {
+        let listener = firebase.auth.onAuthStateChanged(user => {
+            user ? setUserSession(user) : props.history.push("/");
         });
-    }
 
-    return () => {
-      listener();
-    };
-    // eslint-disable-next-line
-  }, [userSession]);
+        if (!!userSession) {
+            firebase
+                .user(userSession.uid)
+                .get()
+                .then(doc => {
+                    if (doc && doc.exists) {
+                        const myData = doc.data();
+                        setUserData(myData);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
 
-  return userSession === null ? (
-    <>
-      <div className="loader"> </div>
-      <p>Loading ...</p>
-    </>
-  ) : (
-    <div className="quiz-bg">
-      <div className="container">
-        <Logout />
-        <Quiz userData={userData} />
-      </div>
-    </div>
-  );
+        return () => {
+            listener();
+        };
+        // eslint-disable-next-line
+    }, [userSession]);
+
+    return userSession === null ? (
+        <>
+            <div className="loader"> </div>
+            <p>Loading ...</p>
+        </>
+    ) : (
+        <div className="quiz-bg">
+            <div className="container">
+                <Logout />
+                <Quiz userData={userData} />
+            </div>
+        </div>
+    );
 };
 
 export default Welcome;
