@@ -12,19 +12,23 @@ import QuizOver from "./QuizOver";
 toast.configure();
 
 class Quiz extends Component {
-  state = {
-    levelsNames: ["debutant", "confirme", "expert"],
-    quizLevel: 0,
-    maxQuestions: 10,
-    storagedQuestions: [],
-    question: null,
-    options: [],
-    idQuestion: 0,
-    goodAnswer: "",
-    score: 0,
-    showToast: false,
-    gameEnd: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      levelsNames: ["debutant", "confirme", "expert"],
+      quizLevel: 0,
+      maxQuestions: 10,
+      storagedQuestions: [],
+      question: null,
+      options: [],
+      idQuestion: 0,
+      goodAnswer: "",
+      score: 0,
+      showToast: false,
+      gameEnd: false,
+      percent: 0,
+    };
+  }
 
   storeDataRef = React.createRef();
 
@@ -120,15 +124,58 @@ class Quiz extends Component {
     }
   }
 
+  getPercentage = (ourScore, maxQuest) => (ourScore / maxQuest) * 100;
+
   gameOver = () => {
-    this.setState({ gameEnd: true });
+    const percentGrade = this.getPercentage(
+      this.state.score,
+      this.state.maxQuestions
+    );
+
+    if (percentGrade >= 50) {
+      this.setState({
+        quizLevel: this.state.quizLevel + 1,
+        percent: percentGrade,
+        gameEnd: true,
+      });
+      toast.success("Bravo! passez au niveau suivant !", {
+        position: "top-right",
+        bodyClassName: "toastify-color",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+      });
+    } else {
+      this.setState({
+        percent: percentGrade,
+        gameEnd: true,
+      });
+    }
+  };
+
+  loadLevelsQuestions = (params) => {
+    this.setState({ ...this.state, quizLevel: params });
+    //this.setState({ gameEnd: false });
+
+    this.loadQuestions(this.state.levelsNames[params]);
   };
 
   render() {
     return (
       <>
         {this.state.gameEnd ? (
-          <QuizOver ref={this.storeDataRef} />
+          <QuizOver
+            ref={this.storeDataRef}
+            quizLevel={this.state.quizLevel}
+            percent={this.state.percent}
+            maxQuestions={this.state.maxQuestions}
+            score={this.state.score}
+            levelsNames={this.state.levelsNames}
+            loadLevelsQuestions={this.loadLevelsQuestions}
+          />
         ) : (
           <>
             <Levels />
