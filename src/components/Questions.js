@@ -1,50 +1,45 @@
 import React, { useState, useEffect } from "react";
 
-const Questions = ({
-  question,
-  options,
-  nextQuestion,
-  idQuestion,
-  maxQuestions,
-}) => {
-  const [btnDisable, setBtnDisable] = useState(true);
-  const [userAnwser, setUserAnwser] = useState("");
+import { FaChevronRight } from "react-icons/fa";
 
-  const submitOption = (selectedOption) => {
-    setUserAnwser(selectedOption);
-    setBtnDisable(false);
-  };
+const Questions = ({ question, options, nextQuestion, idQuestion, maxQuestions }) => {
+    const [btnDisable, setBtnDisable] = useState(true);
+    const [userAnwser, setUserAnwser] = useState("");
 
-  useEffect(() => {
-    setUserAnwser("");
-    setBtnDisable(true);
-  }, [idQuestion]);
+    const submitOption = selectedOption => {
+        setUserAnwser(selectedOption);
+        setBtnDisable(false);
+    };
 
-  return (
-    <>
-      <h2>{question}</h2>
+    useEffect(() => {
+        setUserAnwser("");
+        setBtnDisable(true);
+    }, [idQuestion]);
 
-      {options.map((option, index) => (
-        <p
-          key={index}
-          onClick={() => submitOption(option)}
-          className={`answerOptions ${
-            userAnwser === option ? "selected" : null
-          }`}
-        >
-          {option}
-        </p>
-      ))}
+    return (
+        <>
+            <h2>{question}</h2>
 
-      <button
-        onClick={() => nextQuestion(userAnwser)}
-        disabled={btnDisable}
-        className="btnSubmit"
-      >
-        {idQuestion < maxQuestions - 1 ? "Suivant" : "Terminer"}
-      </button>
-    </>
-  );
+            {options.map((option, index) => (
+                <p
+                    key={index}
+                    onClick={() => submitOption(option)}
+                    className={`answerOptions ${userAnwser === option ? "selected" : null}`}
+                >
+                    <FaChevronRight style={{ marginRight: "8px" }} />
+                    {option}
+                </p>
+            ))}
+
+            <button
+                onClick={() => nextQuestion(userAnwser)}
+                disabled={btnDisable}
+                className="btnSubmit"
+            >
+                {idQuestion < maxQuestions - 1 ? "Suivant" : "Terminer"}
+            </button>
+        </>
+    );
 };
 
 export default Questions;

@@ -11,11 +11,12 @@ import QuizOver from "./QuizOver";
 
 toast.configure();
 
+const levelsNames = ["debutant", "confirme", "expert"];
+
 class Quiz extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            levelsNames: ["debutant", "confirme", "expert"],
             quizLevel: 0,
             maxQuestions: 10,
             storagedQuestions: [],
@@ -64,7 +65,7 @@ class Quiz extends Component {
     };
 
     componentDidMount() {
-        this.loadQuestions(this.state.levelsNames[this.state.quizLevel]);
+        this.loadQuestions(levelsNames[this.state.quizLevel]);
     }
 
     nextQuestion = userAnswer => {
@@ -153,7 +154,7 @@ class Quiz extends Component {
             score: 0,
         });
 
-        this.loadQuestions(this.state.levelsNames[params]);
+        this.loadQuestions(levelsNames[params]);
     };
 
     render() {
@@ -166,15 +167,12 @@ class Quiz extends Component {
                         percent={this.state.percent}
                         maxQuestions={this.state.maxQuestions}
                         score={this.state.score}
-                        levelsNames={this.state.levelsNames}
+                        levelsNames={levelsNames}
                         loadLevelsQuestions={this.loadLevelsQuestions}
                     />
                 ) : (
                     <>
-                        <Levels
-                            levelsNames={this.state.levelsNames}
-                            quizLevel={this.state.quizLevel}
-                        />
+                        <Levels levelsNames={levelsNames} quizLevel={this.state.quizLevel} />
                         <ProgressBar
                             idQuestion={this.state.idQuestion}
                             maxQuestions={this.state.maxQuestions}
