@@ -35,7 +35,6 @@ class Quiz extends Component {
 
     loadQuestions = level => {
         const fetchQuizz = QuizMarvel[0].quizz[level];
-        console.log("fetch", fetchQuizz);
 
         if (fetchQuizz.length >= this.state.maxQuestions) {
             const newArray = fetchQuizz.map(({ answer, ...rest }) => rest);

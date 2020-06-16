@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
 
 import { GiTrophyCup } from "react-icons/gi";
+import Loader from "./Loader";
+import Modal from "./Modal";
 
 const QuizOver = React.forwardRef(
     ({ quizLevel, percent, maxQuestions, score, levelsNames, loadLevelsQuestions }, ref) => {
         const [ask, setAsk] = useState([]);
+        const [openModal, setOpenModal] = useState(false);
+
+        const API_KEY = process.env.REACT_APP_MARVEL_API_KEY;
+        const hash = "389057C95BD9C79C8F230276FB96619A";
 
         useEffect(() => {
             setAsk(ref.current);
         }, [ref]);
 
+        const showModal = () => {
+            setOpenModal(true);
+        };
+
+        const closeModal = () => {
+            setOpenModal(false);
+        };
+
         const average = maxQuestions / 2;
 
         if (score < average) {
-            // setTimeout(() => loadLevelsQuestions(0), 3000);
             setTimeout(() => loadLevelsQuestions(quizLevel), 3000);
         }
 
@@ -80,23 +93,33 @@ const QuizOver = React.forwardRef(
                                         <td>{question.question}</td>
                                         <td>{question.answer}</td>
                                         <td>
-                                            <button className="btnInfo">Infos</button>
+                                            <button onClick={() => showModal()} className="btnInfo">
+                                                Infos
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
                                     <td colSpan="3">
-                                        <div className="loader"></div>
-                                        <p style={{ textAlign: "center", color: "red" }}>
-                                            Pas de réponse
-                                        </p>
+                                        <Loader text="Pas de réponse" />
                                     </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
+                <Modal showModal={openModal} closeModal={closeModal}>
+                    <div className="modalHeader">
+                        <h2>Titre</h2>
+                    </div>
+                    <div className="modalBody">
+                        <h3>Titre 2</h3>
+                    </div>
+                    <div className="modalFooter">
+                        <button className="modalBtn">Fermer</button>
+                    </div>
+                </Modal>
             </>
         );
     }

@@ -3,6 +3,7 @@ import { FirebaseContext } from "./Firebase";
 
 import Logout from "./Logout";
 import Quiz from "./Quiz";
+import Loader from "./Loader";
 
 const Welcome = props => {
     const firebase = useContext(FirebaseContext);
@@ -37,10 +38,7 @@ const Welcome = props => {
     }, [userSession]);
 
     return userSession === null ? (
-        <>
-            <div className="loader"> </div>
-            <p>Loading ...</p>
-        </>
+        <Loader text="Loading..." />
     ) : (
         <div className="quiz-bg">
             <div className="container">
